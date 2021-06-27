@@ -2,16 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
+//import controllers
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CompanysController;
+use App\Http\Controllers\EmployeesController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 //Route to show admin options and data resume
-// Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Route to show list of companies
 Route::get('/dashboard/companys', [CompanysController::class, 'index']);
