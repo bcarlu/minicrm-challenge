@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CompanysController extends Controller
 {
+    // Only authenticated users can enter
+    public function __construct(){
+        $this->middleware(['auth']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +20,8 @@ class CompanysController extends Controller
      */
     public function index()
     {
-        //
+        $companys = DB::table('companys')->paginate(10);
+        return view('companys', ['companys' => $companys]);
     }
 
     /**
@@ -23,7 +31,7 @@ class CompanysController extends Controller
      */
     public function create()
     {
-        //
+        return view('createCompanyForm');
     }
 
     /**
@@ -34,7 +42,20 @@ class CompanysController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // Validate form data
+        $request->validate([
+            'name' => 'required',
+            'email' => 'email|required|unique:companys',
+        ]);
+
+        // if data validation pass, then insert in database
+        DB::table('companys')->insert([
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
+    
+        return redirect('/dashboard');
     }
 
     /**
@@ -79,6 +100,7 @@ class CompanysController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('companys')->where('id', $id)->delete();
+        return redirect('/dashboard');
     }
 }
