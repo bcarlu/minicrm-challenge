@@ -56,7 +56,7 @@ class CompanysController extends Controller
         
         // if data validation pass, then insert in database
         DB::table('companys')->insert([
-            'logo' => $request->file('logo')->store('public/logos'),
+            'logo' => $request->hasFile('logo') ? $request->file('logo')->store('public/logos') : "",
             'name' => $request->name,
             'email' => $request->email
         ]);
