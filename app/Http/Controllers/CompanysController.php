@@ -45,12 +45,18 @@ class CompanysController extends Controller
         
         // Validate form data
         $request->validate([
+            'logo' => 'file|mimes:jpg,jpeg,png',
             'name' => 'required',
-            'email' => 'email|required|unique:companys',
+            'email' => 'email|required|unique:companys'
         ]);
 
+        if($request->hasFile('logo')){
+            $request->file('logo')->store('public/logos');
+        }
+        
         // if data validation pass, then insert in database
         DB::table('companys')->insert([
+            'logo' => $request->file('logo')->store('public/logos'),
             'name' => $request->name,
             'email' => $request->email
         ]);

@@ -22,7 +22,7 @@
                     @if (count($companys) > 0)
                         @foreach ($companys as $company)
                             <tr>
-                                <td>{{$company->logo}}</td>
+                                <td><img src="{{ Storage::url($company->logo) }}" alt="Logo" width="100px"></td>
                                 <td>{{$company->name}}</td>
                                 <td><a href="/dashboard/companys/delete/{{$company->name}}/{{$company->id}}" class="text-red-500">Eliminar</a></td>
                             </tr>

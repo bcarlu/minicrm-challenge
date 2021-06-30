@@ -10,14 +10,18 @@
                     </ul>
                 </div>
             @endif
-            <form action="/dashboard/companys/store" method="POST">
+            <form action="/dashboard/companys/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div>
-                    <label for="name">Nombre Compañia</label><br>
+                    <label for="logo">logo (Opcional)</label><br>
+                    <input type="file" id="logo" name="logo">
+                </div>
+                <div>
+                    <label for="name">Nombre Compañia (Obligatorio)</label><br>
                     <input type="text" id="name" name="name">
                 </div>
                 <div>
-                    <label for="email">Correo</label><br>
+                    <label for="email">Correo (Obligatorio)</label><br>
                     <input type="email" id="email" name="email">
                 </div>
                 
