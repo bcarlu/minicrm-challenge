@@ -24,7 +24,10 @@
                             <tr>
                                 <td><img src="{{ Storage::url($company->logo) }}" alt="Logo" width="100px"></td>
                                 <td>{{$company->name}}</td>
-                                <td><a href="/dashboard/companys/delete/{{$company->name}}/{{$company->id}}" class="text-red-500">Eliminar</a></td>
+                                <td>
+                                    <a href="/dashboard/companys/delete/{{$company->name}}/{{$company->id}}" class="text-red-500">Eliminar</a>
+                                    <a href="/dashboard/companys/edit/{{$company->id}}" class="text-yellow-500">Editar</a>
+                                </td>
                             </tr>
                         @endforeach
                     @else
