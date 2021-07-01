@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreCompanyRequest;
+use App\Http\Requests\EditCompanyRequest;
+use App\Models\Company;
 
 class CompanysController extends Controller
 {
@@ -40,28 +43,24 @@ class CompanysController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCompanyRequest $request)
     {
+        // Validate form fields
+        $request->validated();
         
-        // Validate form data
-        $request->validate([
-            'logo' => 'file|mimes:jpg,jpeg,png',
-            'name' => 'required',
-            'email' => 'email|required|unique:companys'
-        ]);
-
+        $logoPath = "";
         if($request->hasFile('logo')){
-            $request->file('logo')->store('public/logos');
+           $logoPath = $request->file('logo')->store('public/logos');
         }
         
-        // if data validation pass, then insert in database
-        DB::table('companys')->insert([
-            'logo' => $request->hasFile('logo') ? $request->file('logo')->store('public/logos') : "",
+        // if data validation pass, then store in database
+        Company::create([
+            'logo' => $logoPath,
             'name' => $request->name,
             'email' => $request->email
         ]);
-    
-        return redirect('/dashboard');
+
+        return redirect('/dashboard/companys');
     }
 
     /**
@@ -83,7 +82,8 @@ class CompanysController extends Controller
      */
     public function edit($id)
     {
-        //
+        $company = DB::table('companys')->where('id', $id)->first();
+        return view('editCompanyForm', ['company' => $company]);
     }
 
     /**
@@ -93,9 +93,20 @@ class CompanysController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(EditCompanyRequest $request)
+    {   
+        // Validate form fields
+        $request->validated();
+        
+        $company = Company::find($request->id);
+
+        if($request->hasFile('logo')){
+            $company->logo = $request->file('logo')->store('public/logos');
+        }
+
+        $company->update($request->only('name'));
+
+        return redirect('/dashboard/companys');
     }
 
     /**
