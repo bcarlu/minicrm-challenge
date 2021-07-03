@@ -69,9 +69,16 @@ class CompanysController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        
+        $query= trim($request->get('search'));    
+
+        $companys = Company::where('name','LIKE','%'.$query.'%')
+                            ->orderby('id','asc')
+                            ->paginate(10);   
+
+        return view('companys',['companys' => $companys]);
     }
 
     /**
@@ -118,6 +125,6 @@ class CompanysController extends Controller
     public function destroy($id)
     {
         DB::table('companys')->where('id', $id)->delete();
-        return redirect('/dashboard');
+        return redirect('/dashboard/companys');
     }
 }
