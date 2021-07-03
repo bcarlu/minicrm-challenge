@@ -5,7 +5,7 @@
                 <p>Esta seguro que desea eliminar la compañia {{$name}} con id {{$id}}?</p>
                 <div class="flex">                
                 <a href="/dashboard/companys/delete/{{$id}}"><button class="mt-2 p-2 rounded bg-red-500 mr-1">Confirmar</button></a>
-                <a href="/dashboard"><button class="mt-2 p-2 rounded bg-yellow-500">Cancelar</button></a>
+                <a href="/dashboard/companys/"><button class="mt-2 p-2 rounded bg-yellow-500">Cancelar</button></a>
                 </div>
             </div>
         </div>
