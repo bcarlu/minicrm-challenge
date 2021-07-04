@@ -73,8 +73,9 @@ class CompanysController extends Controller
     {
         
         $query= trim($request->get('search'));    
-
-        $companys = Company::where('name','LIKE','%'.$query.'%')
+        
+        // Geting companys by name with case-insensitive argument of postgresql ILIKE
+        $companys = Company::where('name','ILIKE','%'.$query.'%')
                             ->orderby('id','asc')
                             ->paginate(10);   
 
